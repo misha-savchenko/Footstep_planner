@@ -288,7 +288,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CameraMovement.cs" />
     <Compile Include="Assets\FPS.cs" />
+    <Compile Include="Assets\maxCamera.cs" />
     <Compile Include="Assets\restart.cs" />
     <Compile Include="Assets\steps_A_E.cs" />
     <Compile Include="Assets\terrain_color.cs" />

@@ -22,10 +22,13 @@ public class steps_A_E : MonoBehaviour {
         }
     }
 
+
+
+    public GameObject starting_point;
     public GameObject point;
     public GameObject final_point;
 
-    public int max_num_point = 100;
+    public int max_num_point = 5000;
     int curr_num_points = 0;
 
 
@@ -42,6 +45,7 @@ public class steps_A_E : MonoBehaviour {
 
 
 
+
     //Transition test elements
     int failed_queries = 0;
     int maximum_failed_queries = 50;
@@ -52,9 +56,28 @@ public class steps_A_E : MonoBehaviour {
 
     double cost_max = .50;
 
+    GameObject terrain_gm;
+    Terrain terrain;
+    TerrainData terrainData;
+
     void Start() {
 
-        goal_location = new Vector3(Random.Range(-x_max, x_max), 1, Random.Range(-y_max, y_max));
+        terrain_gm = GameObject.Find("Terrain");
+        terrain = terrain_gm.GetComponent<Terrain>();
+        terrainData = terrain.terrainData;
+
+        //float y_01 = (float)y / (float)terrainData.alphamapHeight;
+        //float x_01 = (float)x / (float)terrainData.alphamapWidth;
+
+        //float height = terrainData.GetHeight(Mathf.RoundToInt(y_01 * terrainData.heightmapHeight), Mathf.RoundToInt(x_01 * terrainData.heightmapWidth));
+
+        x_max = terrainData.bounds.size[0];
+        y_max = terrainData.bounds.size[2];
+        //h = terrainData.bounds.size[1];
+
+
+        goal_location = getPoint(Random.value, Random.value);
+
 
         grid_map = new List<Vector3>[Mathf.RoundToInt(x_max * 2) / grid_size + 1][];
         for (int i = 0; i < Mathf.RoundToInt(x_max * 2) / grid_size + 1; i++)
@@ -65,20 +88,13 @@ public class steps_A_E : MonoBehaviour {
                 grid_map[i][j] = new List<Vector3> { };
             }
         }
-
         Physics.gravity = new Vector3(0, 0, 0);
 
-        float x_corr = Random.Range(-x_max, x_max);
-        float y_corr = Random.Range(-y_max, y_max);
+        Vector3 location = getPoint(Random.value, Random.value);
+        addToGrid(location);
 
-        //choose cell storage 
-        int l = Mathf.RoundToInt(x_corr + x_max) / grid_size;
-        int m = Mathf.RoundToInt(y_corr + y_max) / grid_size;
 
-        Vector3 location = new Vector3(x_corr, 0, y_corr); // pick a random location 
-        grid_map[l][m].Add(location); //Add new point to the grid
-
-        point = GameObject.Instantiate(point, location, Quaternion.identity) as GameObject; //spawn new intial point 
+        starting_point = GameObject.Instantiate(starting_point, location, Quaternion.identity) as GameObject; //spawn new intial point 
         final_point = GameObject.Instantiate(final_point, goal_location, Quaternion.identity) as GameObject; //spawn new intial point 
 
 
@@ -86,7 +102,7 @@ public class steps_A_E : MonoBehaviour {
         Node root = new Node(location, location, 0);
         tRRT.Add(root);
 
-        LineRenderer lineRenderer = point.AddComponent<LineRenderer>();
+        LineRenderer lineRenderer = starting_point.AddComponent<LineRenderer>();
 
         curr_num_points++;
 
@@ -95,64 +111,54 @@ public class steps_A_E : MonoBehaviour {
     void Update() {
         if (curr_num_points <= max_num_point && go)
         {
-
-
             float closest = 100000;
             Vector3 closest_node = new Vector3(9999, 9999, 9999);
 
-            Vector3 new_node;
+            Vector3 location = getPoint(Random.value, Random.value);
 
-            float x_corr = Random.Range(-x_max, x_max);
-            float y_corr = Random.Range(-y_max, y_max);
-
-            //choose cell storage 
-            int l = Mathf.RoundToInt(x_corr + x_max) / grid_size;
-            int m = Mathf.RoundToInt(y_corr + y_max) / grid_size;
-
-            Vector3 location = new Vector3(x_corr, 0, y_corr);
-
+            //search for closest node
             for (int i = 0; i < grid_map.Length; i++)
             {
                 for (int j = 0; j < grid_map[i].Length; j++)
                 {
                     for (int k = 0; k < grid_map[i][j].Count; k++)
                     {
+                        Vector2 grid_vec = new Vector2(grid_map[i][j][k][0],grid_map[i][j][k][2]);
+                        Vector2 loc_vec = new Vector2(location[0], location[2]);
+
                         if (closest_node != new Vector3(9999, 9999, 9999)) {
-                            if (Vector3.Distance(location, grid_map[i][j][k]) <= closest)
+                            if (Vector2.Distance(loc_vec, grid_vec ) <= closest)
                             {
                                 closest = Vector3.Distance(location, grid_map[i][j][k]);
                                 closest_node = grid_map[i][j][k];
-                                new_node = grid_map[i][j][k];
                             }
                         }
+
                         else
                         {
-                            closest = Vector3.Distance(location, grid_map[i][j][k]);
+                            closest = Vector2.Distance(loc_vec, grid_vec);
                             closest_node = grid_map[i][j][k];
-                            new_node = grid_map[i][j][k];
                         }
                     }
                 }
             }
 
-            new_node = closest_node + (location - closest_node).normalized * delta;
 
-            grid_map[l][m].Add(new_node); //Add new point to the grid
-
-
+            Vector3 new_node = closest_node + (location - closest_node).normalized * delta;
+            new_node = getPoint(new_node[0]/x_max, new_node[2]/y_max); //recalculate the the new node location
+            addToGrid(new_node); //Add new point to the grid
+            
             int parent_ind = 0;
 
             while (tRRT[parent_ind].position != closest_node)
             {
                 parent_ind++;
             }
-                
-                
-                
+
             Node leaf = new Node(new_node, closest_node, parent_ind);
             tRRT.Add(leaf);
             GameObject p = Instantiate(point, new_node, Quaternion.identity) as GameObject; //spawn new intial point 
-            
+
             LineRenderer lineRenderer = p.GetComponent<LineRenderer>();
 
             lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
@@ -182,7 +188,7 @@ public class steps_A_E : MonoBehaviour {
             }
         }
     }
-    
+
     void build_path(Node final_node)
     {
 
@@ -190,16 +196,15 @@ public class steps_A_E : MonoBehaviour {
         Node curr_node = final_node;
         int parent_index = final_node.parent_index;
 
-        while (parent_index != 0 )
+        while (parent_index != 0)
         {
             path.Add(curr_node.position);
             curr_node = tRRT[parent_index];
             parent_index = curr_node.parent_index;
         }
 
-
         GameObject p = Instantiate(point, final_node.position, Quaternion.identity) as GameObject; //spawn new intial point 
-        
+
         LineRenderer lineRenderer = p.GetComponent<LineRenderer>();
 
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
@@ -221,7 +226,7 @@ public class steps_A_E : MonoBehaviour {
         curr_num_points++;
         lineRenderer.positionCount = path.Count;
         lineRenderer.SetPositions(path2);
-        
+
 
     }
 
@@ -237,8 +242,8 @@ public class steps_A_E : MonoBehaviour {
         double dist = Vector3.Distance(qnear, qnew);
         double trans_prob = -((cost_new - cost_near) / dist) / (K_cost * temper);
         double rho = Mathf.Exp((float)trans_prob);
-        
-        if (Random.value < rho){
+
+        if (Random.value < rho) {
             temper /= alpha;
             failed_queries = 0;
             return true;
@@ -256,5 +261,30 @@ public class steps_A_E : MonoBehaviour {
             return false;
         }
     }
+
+    Vector3 getPoint(float x, float y)
+    {
+        float x_corr = x * x_max;
+        float y_corr = y * y_max;
+        float z_corr = terrainData.GetHeight(Mathf.RoundToInt(x * terrainData.heightmapHeight), Mathf.RoundToInt(y * terrainData.heightmapHeight));
+
+
+        Vector3 location = new Vector3(x_corr, z_corr, y_corr);
+        return location;
+    }
+
+    void addToGrid(Vector3 location)
+    {
+
+        //choose cell storage 
+        int l = Mathf.RoundToInt(location[0]) / grid_size;
+        int m = Mathf.RoundToInt(location[2]) / grid_size;
+        //Add new point to the grid
+
+
+        grid_map[l][m].Add(location);
+    }
+
+
 
 }

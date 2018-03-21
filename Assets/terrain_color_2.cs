@@ -74,7 +74,7 @@ public class terrain_color_2 : MonoBehaviour
                 splatWeights[2] = 0;
                 splatWeights[3] = 1-z;
 
-
+                /*
                 if (x > 95 && x < 100 && y < 5)
                 {
 
@@ -83,7 +83,7 @@ public class terrain_color_2 : MonoBehaviour
                     Debug.Log(z);
                     Debug.Log(1-z);
                 }
-
+                */
 
                 // Loop through each terrain texture
                 for (int i = 0; i < terrainData.alphamapLayers; i++)
