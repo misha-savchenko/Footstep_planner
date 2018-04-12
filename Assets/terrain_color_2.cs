@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class terrain_color_2 : MonoBehaviour
 {
-    float radius = 5;
+    public float radius = 5;
+
+    public int ncrit = 50;
+    public int nst = 0;
+    public int d = 10;
+
+    public float hcrit = 4; //40 cm, ~ the height of two steps
+    public float scrit = 30; //degrees, approximation
+
+    public float a1 = 0.5F;
+    public float a2 = 0.25F;
+    public float a3 = 0.25F;
 
     void Start()
     {
@@ -27,18 +38,19 @@ public class terrain_color_2 : MonoBehaviour
                 float steepness = terrainData.GetSteepness(y_01, x_01);
 
                 // Sample the height at this location (note GetHeight expects int coordinates corresponding to locations in the heightmap array)
-
+                /*
                 int ncrit = 50;
                 int nst = 0;
                 int d = 10;
 
                 float hcrit = 4; //40 cm, ~ the height of two steps
                 float scrit = 30; //degrees, approximation
-               
+                */
                 int xl = x - d;
                 int xh = x + d;
                 int yl = y - d;
                 int yh = y + d;
+
 
                 float hmax = 0;
 
@@ -82,11 +94,11 @@ public class terrain_color_2 : MonoBehaviour
                 splatWeights[3] = 0.5f;
 
                 //Weights for the traversibility of the terrain 
-
+                /*
                 float a1 = 0.5F;
                 float a2 = 0.25F;
                 float a3 = 0.25F;
-
+                */
                 float[] weights = { a1, a2, a3, 1 };
                 float[] crits = { 30, hcrit, 9999, 9999};
                 //Slope of the terrain

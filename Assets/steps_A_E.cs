@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class steps_A_E : MonoBehaviour {
 
+    public bool path_found = false;
+    public float node_line_width = 1;
+    public float path_width = 3;
     List<Node> tRRT = new List<Node>();
 
     public bool go = false;
@@ -13,12 +16,13 @@ public class steps_A_E : MonoBehaviour {
         public Vector3 position;
         public Vector3 parent_position;
         public int parent_index;
-
+        public float radius;
         public Node(Vector3 pos, Vector3 p_pos, int pi)
         {
             position = pos;
             parent_position = p_pos;
             parent_index = pi;
+            //radius = R;
         }
     }
 
@@ -37,10 +41,11 @@ public class steps_A_E : MonoBehaviour {
 
     public float delta = 3;
 
+
     public Vector3 goal_location;
     public Vector3 starting_location;
 
-    List<Vector3>[][] grid_map;
+    public List<Vector3>[][] grid_map;
 
 
 
@@ -103,52 +108,20 @@ public class steps_A_E : MonoBehaviour {
 
     }
 
-    void SpawnStartEndPoints(GameObject start_or_end_point)
-    {
-        myRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(myRay, out hit))
-        { // here I ask : if myRay hits something, store all the info you can find in the raycasthit varible.
-          // things like the position where the hit happend, the name of the object that got hit etc..etc..
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (!GameObject.Find("Starting point(Clone)"))
-                {
-                    addToGrid(hit.point);
-                    Node root = new Node(hit.point, hit.point, -1);
-                    tRRT.Add(root);
-                }
-                start_or_end_point = GameObject.Instantiate(start_or_end_point, hit.point, Quaternion.identity);// instatiate a prefab on the position where the ray hits the floor.
-                LineRenderer lineRenderer = start_or_end_point.AddComponent<LineRenderer>();
-                if (!GameObject.Find("Final point(Clone)"))
-                {
-                    starting_location = hit.point;
-                }
-
-                else {
-                    goal_location = hit.point;
-                }
-            }
-
-        }
-    }
-
-
+    
     void Update() {
-        if (!GameObject.Find("Starting point(Clone)") || !GameObject.Find("Final point(Clone)"))
+        if (GameObject.Find("Starting point(Clone)"))
         {
-            if (!GameObject.Find("Starting point(Clone)"))
-            {
-                SpawnStartEndPoints(starting_point);
-                curr_num_points++;
-            }
-            else
-            {
-                SpawnStartEndPoints(final_point);
-            }
+            addToGrid(starting_location);
+            Node root = new Node(starting_location, starting_location, -1);
+            tRRT.Add(root);
+            curr_num_points++;
+
         }
-        else
+
+        if (GameObject.Find("Starting point(Clone)") && GameObject.Find("Final point(Clone)"))
         {
+
             bool redo = false;
             if (curr_num_points <= max_num_point && go)
             {
@@ -213,7 +186,7 @@ public class steps_A_E : MonoBehaviour {
                     LineRenderer lineRenderer = p.GetComponent<LineRenderer>();
 
                     lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-                    lineRenderer.widthMultiplier = 0.02f;
+                    lineRenderer.widthMultiplier = node_line_width;
                     lineRenderer.positionCount = 2;
 
                     // A simple 2 color gradient with a fixed alpha of 1.0f.
@@ -236,6 +209,7 @@ public class steps_A_E : MonoBehaviour {
                         Node final_node = leaf;
                         build_path(final_node);
                         go = false;
+                        path_found = true;
                     }
                     redo = true;
                 }
@@ -248,10 +222,12 @@ public class steps_A_E : MonoBehaviour {
         }
     }
 
+    public List<Vector3> path = new List<Vector3> { }; 
+
     void build_path(Node final_node)
     {
 
-        List<Vector3> path = new List<Vector3>();
+        //path = new List<Vector3>();
         Node curr_node = final_node;
         int parent_index = final_node.parent_index;
         path.Add(goal_location);
@@ -269,7 +245,7 @@ public class steps_A_E : MonoBehaviour {
         LineRenderer lineRenderer = p.GetComponent<LineRenderer>();
 
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.widthMultiplier = .2f;
+        lineRenderer.widthMultiplier = path_width;
         lineRenderer.positionCount = path.Count;
 
         // A simple 2 color gradient with a fixed alpha of 1.0f.
@@ -343,7 +319,7 @@ public class steps_A_E : MonoBehaviour {
         return location;
     }
 
-    void addToGrid(Vector3 location)
+    public void addToGrid(Vector3 location)
     {
 
         //choose cell storage 
@@ -399,9 +375,10 @@ public class steps_A_E : MonoBehaviour {
     }
 
     int ncrit = 50;
-    float hcrit = 4; //40 cm, ~ the height of two steps
+    public float hcrit = 4; //40 cm, ~ the height of two steps
     float scrit = 30; //degrees, approximation
 
+    public int d = 10;
 
     float getH(Vector3 position)
     {
@@ -409,7 +386,7 @@ public class steps_A_E : MonoBehaviour {
         float hmax = 0;
         int nst = 0;
 
-        int d = 10;
+        
 
         int y = Mathf.RoundToInt(position[2] / y_max * terrainData.alphamapHeight);
         int x = Mathf.RoundToInt(position[0] / x_max * terrainData.alphamapWidth);
