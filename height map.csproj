@@ -300,29 +300,45 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CameraController.cs" />
     <Compile Include="Assets\CameraMovement.cs" />
+    <Compile Include="Assets\collision_detection.cs" />
+    <Compile Include="Assets\collisiondetetion.cs" />
     <Compile Include="Assets\comm.cs" />
+    <Compile Include="Assets\FlyCam.cs" />
     <Compile Include="Assets\footsteps.cs" />
     <Compile Include="Assets\footsteps2.cs" />
     <Compile Include="Assets\footsteps7.cs" />
+    <Compile Include="Assets\footsteps8.cs" />
+    <Compile Include="Assets\footsteps9.cs" />
     <Compile Include="Assets\FPS.cs" />
     <Compile Include="Assets\global_path.cs" />
     <Compile Include="Assets\global_t_rrt.cs" />
     <Compile Include="Assets\global_t_rrt_variant.cs" />
     <Compile Include="Assets\maxCamera.cs" />
+    <Compile Include="Assets\MouseLook.cs" />
     <Compile Include="Assets\restart.cs" />
+    <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
+    <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
+    <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />
+    <Compile Include="Assets\spawner.cs" />
     <Compile Include="Assets\steps_A_E.cs" />
     <Compile Include="Assets\terrain_color.cs" />
     <Compile Include="Assets\terrain_color_2.cs" />
     <Compile Include="Assets\terrain_color_voxel.cs" />
+    <Compile Include="Assets\transfer_temp.cs" />
     <Compile Include="Assets\trrt.cs" />
     <Compile Include="Assets\trrt_interpolation.cs" />
+    <Compile Include="Assets\trrt_interpolation_no_angle_opt.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Accord.NET lib\Accord.Math.Core.XML" />
     <None Include="Assets\Accord.NET lib\Accord.Math.XML" />
     <None Include="Assets\Accord.NET lib\Accord.Statistics.XML" />
     <None Include="Assets\Accord.NET lib\Accord.XML" />
+    <None Include="Assets\RTS_Camera\Demo\Projectors\Guidelines.txt" />
+    <None Include="Assets\RTS_Camera\Demo\Projectors\Shaders\ProjectorLight.shader" />
+    <None Include="Assets\RTS_Camera\Demo\Projectors\Shaders\ProjectorMultiply.shader" />
     <None Include="Assets\point.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

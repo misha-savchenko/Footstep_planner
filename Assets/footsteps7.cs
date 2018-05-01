@@ -124,13 +124,12 @@ public class footsteps7 : MonoBehaviour
 
             Node first_node = new Node(right_loc, VecIn2D(right_loc), left_loc, 0, 0, 90, "left");
             tree.Add(first_node);
-            Debug.Log(goal_location);
         }
 
         if (!goal_reached)
         {
             HierarchialRRT(start_position, goal_location);
-            Debug.Log("still working");
+            //Debug.Log("still working");
         }
         else if (!global_foot_paths && goal_reached)
         {
@@ -142,7 +141,6 @@ public class footsteps7 : MonoBehaviour
             {
 
 
-                //Debug.Log(node.self_index);
                 if (node.foot == "left")
                 {
                     right_foot = GameObject.Instantiate(right_foot, node.position, Quaternion.Euler(0, node.theta, 0));
@@ -155,23 +153,11 @@ public class footsteps7 : MonoBehaviour
                     left_foot.tag = "FinalFootSteps";
                     left_foot.name = "footstep" + (num_of_footsteps + 2).ToString();
                 }
-                Debug.Log("A");
-                //Debug.Log(node.parent_index);
                 node = tree[node.parent_index];
                 num_of_footsteps++;
             }
             
-            /*
-            for (int i = 0; i < tree.Count; i++)
-            {
-                Debug.Log("NEW NODE");
-                Debug.Log(i);
-                Debug.Log(tree[i].self_index);
-                Debug.Log(tree[i].parent_index);
-
-            }
-            */
-            //footsteps_displayed = true;
+        
             if (path.Count - goal_index >= 0)
             {
                 goal_location = path[path.Count - goal_index];
@@ -179,7 +165,6 @@ public class footsteps7 : MonoBehaviour
                 goal_reached = false;
                 list_of_trees.Add(tree);
                 start_position = closest_node.position;
-                Debug.Log(closest_node.position);
                 tree.Clear();
                 closest_node.parent_index = 0;
                 closest_node.self_index = 0;
@@ -190,8 +175,6 @@ public class footsteps7 : MonoBehaviour
                 global_foot_paths = true;
             }
             
-            Debug.Log("goal_reached");
-            //Debug.Log(num_of_footsteps);
         }
         else if (global_foot_paths)
         {

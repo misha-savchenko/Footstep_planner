@@ -8,7 +8,7 @@ public class restart : MonoBehaviour
     {
         var global_t_rrt = this.GetComponent<trrt_interpolation>();
 
-        var footsteps = this.GetComponent<footsteps7>();
+        var footsteps = this.GetComponent<footsteps8>();
 
         if (Input.GetKeyDown(KeyCode.R))
         {

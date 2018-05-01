@@ -10,7 +10,7 @@ public class comm : MonoBehaviour {
     //global node delta: 1 meter
     //footstep node delta .002 cm
 
-    public footsteps7 footsteps;
+    public footsteps8 footsteps;
     //public steps_A_E global_RRT;
     //public global_t_rrt_variant global_RRT;
     public trrt_interpolation global_RRT;
@@ -21,20 +21,27 @@ public class comm : MonoBehaviour {
 
     public int step_d = 10;
     public float hcrit = .4F;
+
+    public float multiplier = 3F;
+    public Vector3 foot_size = new Vector3(2, 0.1f, 1);
+    
     void Start()
     {
+        Physics.GetIgnoreLayerCollision(0, 9);
+        Physics.GetIgnoreLayerCollision(9, 9);
+
+        foot_size *= multiplier;
+        
 
 
-        //global_RRT = GameObject.FindObjectOfType<steps_A_E>();
-        //global_RRT = GameObject.FindObjectOfType<global_t_rrt_variant>();
         global_RRT = GameObject.FindObjectOfType<trrt_interpolation>();
-        footsteps = GameObject.FindObjectOfType<footsteps7>();
-        //footsteps.global_RRT = GameObject.FindObjectOfType<trrt>();
+        footsteps = GameObject.FindObjectOfType<footsteps8>();
 
-
+        global_RRT.delta *= multiplier/2;
 
         terrain_color = GameObject.FindObjectOfType<terrain_color_2>();
 
+        global_RRT.foot_size = foot_size;
 
         global_RRT.d = step_d;
         terrain_color.d = step_d;
@@ -42,6 +49,8 @@ public class comm : MonoBehaviour {
         global_RRT.hcrit = hcrit;
         terrain_color.hcrit = hcrit;
 
+        footsteps.multiplier = multiplier;
+        footsteps.foot_size = foot_size;
 
         footsteps.enabled = false;
     }
@@ -57,17 +66,19 @@ public class comm : MonoBehaviour {
             {
                 SpawnStartEndPoints(global_RRT.final_point);
             }
+
         }
 
 
-        if (global_RRT.path_found && (!GameObject.Find("left(Clone)") || !GameObject.Find("right(Clone)")))
+        if (global_RRT.path_found && (!GameObject.Find("left(Clone)") || !GameObject.Find("right(Clone)")) && Input.GetKeyDown(KeyCode.Space))
         {
             footsteps.path = global_RRT.path;
             footsteps.start_position = footsteps.path[footsteps.path.Count-1];
             //footsteps.temp_goal_location = footsteps.path[footsteps.path.Count - 2];
             footsteps.goal_location = footsteps.path[footsteps.path.Count-2];
             footsteps.tRRT = global_RRT;
-            
+
+
             /*
             footsteps.left_foot.transform.localScale = new Vector3(0.01F, 0.01F, 0.01F);
             footsteps.right_foot.transform.localScale = new Vector3(0.01F, 0.01F, 0.01F);
@@ -75,8 +86,6 @@ public class comm : MonoBehaviour {
             footsteps.right_foot_after_image.transform.localScale = new Vector3(0.01F, 0.01F, 0.01F);
             */
             footsteps.enabled = true;
-
-            Debug.Log("Yup");
         }
 
 

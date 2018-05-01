@@ -56,14 +56,14 @@ public class terrain_color_2 : MonoBehaviour
 
                 float height = terrainData.GetHeight(Mathf.RoundToInt(y_01 * terrainData.heightmapHeight), Mathf.RoundToInt(x_01 * terrainData.heightmapWidth));
                 //List<float> temp_step_height = new List<float>{ 0 };
-
+                
                 for (int i = xl; i < xh; i++)
                 {
                     for (int j = yl; j < yh; j++)
                     {
                         if (i >= 0 && i <= terrainData.alphamapWidth && j >= 0 && j <= terrainData.alphamapHeight)
                         {
-                            float step_height = Mathf.Abs(terrainData.GetHeight(Mathf.RoundToInt(j), Mathf.RoundToInt(i))-height);
+                            float step_height = Mathf.Abs(terrainData.GetHeight(j, i)-height);
                             if (step_height > hcrit && Mathf.Abs(terrainData.GetSteepness(j / (float)terrainData.alphamapHeight, i / (float)terrainData.alphamapWidth) - steepness) > scrit)
                             {
                                 if (step_height > hmax) { hmax = step_height; }
@@ -100,7 +100,7 @@ public class terrain_color_2 : MonoBehaviour
                 float a3 = 0.25F;
                 */
                 float[] weights = { a1, a2, a3, 1 };
-                float[] crits = { 30, hcrit, 9999, 9999};
+                float[] crits = { scrit, hcrit, 1, 9999};
                 //Slope of the terrain
                 splatWeights[0] = steepness;// Mathf.Clamp01(steepness * steepness / (terrainData.heightmapHeight / 5.0f));
                 //Increases with height 
@@ -130,6 +130,7 @@ public class terrain_color_2 : MonoBehaviour
                 splatWeights[1] = 0;
                 splatWeights[2] = 0;
                 splatWeights[3] = 0;
+
                 if (z >= 1)
                 {
                     splatWeights[1] = 1;

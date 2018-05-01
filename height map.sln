@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "height map", "height map.csproj", "{5C5C3351-A85A-B542-3F71-FC7D7DB2BA90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "height map.Editor", "height map.Editor.csproj", "{6169751D-3A1E-9D7B-02A2-DB8CCC43538C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{5C5C3351-A85A-B542-3F71-FC7D7DB2BA90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C5C3351-A85A-B542-3F71-FC7D7DB2BA90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C5C3351-A85A-B542-3F71-FC7D7DB2BA90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6169751D-3A1E-9D7B-02A2-DB8CCC43538C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6169751D-3A1E-9D7B-02A2-DB8CCC43538C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6169751D-3A1E-9D7B-02A2-DB8CCC43538C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6169751D-3A1E-9D7B-02A2-DB8CCC43538C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
