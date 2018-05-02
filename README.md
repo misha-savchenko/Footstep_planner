@@ -31,9 +31,17 @@ Hierarchical-RRT is also capable of adjusting the gait of the robot by defining 
 
 # Overall Structure
 
-The overall structure was inspired by the a similar hierarchical implementation of footstep checking as described in [5]. The hierarchical structures checks the potential region for a footstep starting from a broad region and reducing the size of a region until only the foot itself fits into the specified region. This structure was implemented in attempt to increase the computational efficiency when traversing terrain with large areas of low cost surface. As soon as the traversability cost function identifies the area of 0 cost, we can immediately add our potential nodes to the tree and move on to the next step. If, however our error checking does identify a non zero cost for our area we proceed a layer deeper to check a smaller area, and if needed again we check the exact area of the foot for fitting to validate this potential step.
+The overall structure was inspired by the a similar hierarchical implementation of footstep checking as described in [5]. The hierarchical structures checks the potential region for a footstep starting from a broad region and reducing the size of a region until only the foot itself fits into the specified region. This structure was implemented in attempt to increase the computational efficiency when traversing terrain with large areas of low cost surface. As soon as the traversability cost function identifies the area of 0 cost, we can immediately add our potential nodes to the tree and move on to the next step. If, however our error checking does identify a non zero cost for our area we proceed a layer deeper to check a smaller area, and if
+needed again we check the exact area of the foot for fitting to validate this potential step.
 
-# Conclusion
+## Conclusion
+
+### t-RRT
+![](http://i.imgur.com/OUkLi.gif)
+
+### Generating Steps
+
+## Conclusion
 
 
 ## Using and Installing
