@@ -7,7 +7,8 @@ README
 # Rough Terrain Exploration With a Legged Humanoid Robot
 
 ## Introduction
-    Legged robots are capable of traversing terrains the are simply inaccessible to the wheeled type of robots, however the accessibility to more difficult terrains come with the problem of traversing unstructured rough terrain. One way to approach the traversal of the unstructured terrain is to ensure the stability of it footsteps that the robot will take throughout the terrain.
+    Legged robots are capable of traversing terrains the are simply inaccessible
+    to the wheeled type of robots, however the accessibility to more difficult terrains come with the problem of traversing unstructured rough terrain. One way to approach the traversal of the unstructured terrain is to ensure the stability of it footsteps that the robot will take throughout the terrain.
 	The stability of a footstep can be described by using the characteristics of the terrain itself. As Chestnutt [1] describes in their paper the terrain traversability can be described via the slope, step height, roughness, and curvature of the area. Another problem in traversing unstructured terrain is finding the right sequence of footstep, a number of different methods were proposed that generate the sequence of footstep the most common, amongst the literature I have encountered is to use graph search techniques like A* search and its family after analyzing the terrain in question as a traversability grid where each cell contains the information about the local terrain data and giving each cell a cost based on the traverisiblity estimation, thus converting the terrain into a traversability map and letting the graph search algorithm find a path through out the terrain.
 	For this project I have chosen a different method that relies on variations of the RRT algorithms, t-RRT[2] and a hierarchical-RRT[3] algorithm and a hierarchical structure for their implementation[4].
 ## Methods
