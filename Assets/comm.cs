@@ -89,7 +89,7 @@ public class comm : MonoBehaviour {
             {
 
                 start_or_end_point = GameObject.Instantiate(start_or_end_point, hit.point, Quaternion.identity);
-                LineRenderer lineRenderer = start_or_end_point.AddComponent<LineRenderer>();
+                //LineRenderer lineRenderer = start_or_end_point.AddComponent<LineRenderer>();
 
 
                 if (!GameObject.Find("Final point(Clone)"))

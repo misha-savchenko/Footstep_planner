@@ -4,4 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 0
+    path: Assets/t_trrt_door_way.unity
+    guid: 596ab5bf7f8fd3644a755fa2721e9506
+  - enabled: 0
+    path: Assets/door_war_trrt 1.unity
+    guid: 81a033d9cb24e3442ba255e83f7079fd
+  - enabled: 1
+    path: Assets/t_trrt_rough_path.unity
+    guid: cac38444257b2864d8e48721b792ed83

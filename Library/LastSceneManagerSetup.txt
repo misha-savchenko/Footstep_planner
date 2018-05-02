@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/stair_trial.unity
+- path: Assets/t_trrt_rough_path.unity
   isLoaded: 1
   isActive: 1
