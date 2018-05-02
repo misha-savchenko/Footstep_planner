@@ -14,6 +14,9 @@ The stability of a footstep can be described by using the characteristics of the
 
 For this project I have chosen a different method that relies on variations of the RRT algorithms, t-RRT[2] and a hierarchical-RRT[3] algorithm and a hierarchical structure for their implementation[4].
 
+\(\epsilon\)
+
+
 # Methods
 
 # Unity
