@@ -12,9 +12,14 @@ public class comm : MonoBehaviour {
     public bool debug = true;
 
     public int step_d = 10;
+
     public float hcrit = .4F;
     public float scrit = 30;
     public float rcrit = 1;
+
+    public float slope_weight = 0.5F;
+    public float height_weight = 0.25F;
+    public float roughness_weight = 0.25F;
 
     public float multiplier = 3F;
     public Vector3 foot_size = new Vector3(2, 0.1f, 1);
@@ -40,8 +45,13 @@ public class comm : MonoBehaviour {
 
 
         float[] crits = new float[] { scrit, hcrit, rcrit, 9999 };
+        float[] weights = new float[] { slope_weight, height_weight, roughness_weight, 1};
+
         global_RRT.crits = crits;
         terrain_color.crits = crits;
+
+        global_RRT.weights = weights;
+        terrain_color.weights = weights;
 
         footsteps.multiplier = multiplier;
         footsteps.foot_size = foot_size;

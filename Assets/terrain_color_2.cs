@@ -20,7 +20,7 @@ public class terrain_color_2 : MonoBehaviour
 
 
     public float[] crits;
-
+    public float[] weights;
 
     void Start()
     {
@@ -104,7 +104,7 @@ public class terrain_color_2 : MonoBehaviour
                 float a2 = 0.25F;
                 float a3 = 0.25F;
                 */
-                float[] weights = { a1, a2, a3, 1 };
+                //float[] weights = { a1, a2, a3, 1 };
                 //float[] crits = { scrit, hcrit, 1, 9999};
                 //Slope of the terrain
                 splatWeights[0] = steepness;// Mathf.Clamp01(steepness * steepness / (terrainData.heightmapHeight / 5.0f));

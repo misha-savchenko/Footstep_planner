@@ -74,8 +74,6 @@ public class trrt_interpolation: MonoBehaviour
         Physics.gravity = new Vector3(0, 0, 0);
     }
 
-    public float epsilon = 1;
-    public float R_multiplier = 10;
 
     public Vector3 foot_size = new Vector3(2, 0.1f, 1);
 
@@ -268,6 +266,7 @@ public class trrt_interpolation: MonoBehaviour
     }
 
     public float[] crits;
+    public float[] weights;
 
     public float getCost(Vector3 position, int d)
     {
@@ -316,13 +315,13 @@ public class trrt_interpolation: MonoBehaviour
         float steepness = terrainData.GetSteepness(position[0] / x_max, position[2] / y_max);
 
 
-        float slope_weight = 0.5F;
-        float height_weight = 0.25F;
-        float roughness_weight = 0.25F;
+        float slope_weight = weights[0];
+        float height_weight = weights[1];
+        float roughness_weight = weights[2];
         //float euclidean_distance_weight = .4F;
         //float angle_weight = 0.10F
 
-        float[] weights = { slope_weight, height_weight, roughness_weight, 1 };// , euclidean_distance_weight };
+        //float[] weights = { slope_weight, height_weight, roughness_weight, 1 };// , euclidean_distance_weight };
         //float[] crits = { scrit, hcrit, 1, 9999 };// , Vector3.Distance(starting_location,goal_location)*2F};
 
         //Slope of the terrain
@@ -330,7 +329,7 @@ public class trrt_interpolation: MonoBehaviour
         //Increases with height 
         float h = getH(position, d);
         //Metric for roughness
-        float r = roughness_weight * Mathf.Clamp01(steepness * steepness / (terrainData.heightmapHeight));
+        float r = Mathf.Clamp01(steepness * steepness / (terrainData.heightmapHeight));
         //Eucldian distance 
         //float eucl = Vector3.Distance(position,goal_location);
         //Angle difference
@@ -364,8 +363,6 @@ public class trrt_interpolation: MonoBehaviour
         float hmax = 0;
         int nst = 0;
 
-
-
         int y = Mathf.RoundToInt(position[2] / y_max * terrainData.alphamapHeight);
         int x = Mathf.RoundToInt(position[0] / x_max * terrainData.alphamapWidth);
 
@@ -385,11 +382,8 @@ public class trrt_interpolation: MonoBehaviour
             {
                 if (i >= 0 && i <= terrainData.alphamapWidth && j >= 0 && j <= terrainData.alphamapHeight)
                 {
-                    //float step_height = Mathf.Abs(terrainData.GetHeight(Mathf.RoundToInt(j/ terrainData.alphamapHeight), Mathf.RoundToInt(i)/terrainData.alphamapWidth) - height);
-                    float step_height = Mathf.Abs(terrainData.GetHeight(i , j ) - height);
-                    //Debug.Log("A");
-                    //Debug.Log(step_height);
-                    //if (step_height > hcrit && Mathf.Abs(terrainData.GetSteepness(j / (float)terrainData.alphamapHeight, i / (float)terrainData.alphamapWidth) - steepness) > scrit)
+                    float step_height = Mathf.Abs(terrainData.GetHeight(i, j) - height);
+                    //if (step_height > hcrit && Mathf.Abs(terrainData.GetSteepness(i / (float)terrainData.alphamapWidth, j / (float)terrainData.alphamapHeight) - steepness) > scrit)
                     if (step_height > hcrit && Mathf.Abs(terrainData.GetSteepness(i / (float)terrainData.alphamapWidth, j / (float)terrainData.alphamapHeight) - steepness) > scrit)
                     {
                         if (step_height > hmax) { hmax = step_height; }
@@ -406,13 +400,7 @@ public class trrt_interpolation: MonoBehaviour
         {
             hmax = hmax * nst / ncrit;
         }
-        //Debug.Log(hmax);
         return hmax;
-
-
-
-
-
     }
     
     Vector2 Interpolate(Vector2 close_location, Vector2 random_location)
@@ -434,46 +422,11 @@ public class trrt_interpolation: MonoBehaviour
         {
 
             Vector2 temp_mid_location = Vector2.Lerp(close_location, final_location, f);
-            f+=.1f;
+            f+=.2f;
 
             if (getCost(getPoint(temp_mid_location[0] / x_max, temp_mid_location[1] / y_max),d)>= 0.8)
             {
-                break;
-            }
-            else
-            {
-                mid_location = temp_mid_location;
-            }
-
-        }
-        return mid_location;
-
-    }
-
-    Vector2 Interpolate2(Vector2 close_location, Vector2 random_location)
-    {
-
-        Vector2 final_location = random_location;
-        Vector2 mid_location = close_location;
-        float dist = Vector2.Distance(final_location, close_location);
-
-
-
-        if (Vector2.Distance(close_location, random_location) > delta)
-        {
-            final_location = close_location + (random_location - close_location).normalized * delta;
-        }
-
-        float f = 0f;
-
-        while (Vector2.Distance(close_location, mid_location) < Vector2.Distance(close_location, final_location))
-        {
-
-            Vector2 temp_mid_location = Vector2.Lerp(close_location, final_location, f);
-            f += .2f;
-
-            if (getCost(getPoint(temp_mid_location[0] / x_max, temp_mid_location[1] / y_max), d) >= 0.8)
-            {
+                mid_location = Vector2.Lerp(close_location, final_location, f - .2f);
                 break;
             }
             else

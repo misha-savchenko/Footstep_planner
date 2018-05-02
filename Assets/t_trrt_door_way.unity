@@ -163,10 +163,13 @@ MonoBehaviour:
   terrain_color: {fileID: 0}
   global_path_generated: 0
   debug: 1
-  step_d: 10
+  step_d: 8
   hcrit: 0.4
   scrit: 30
   rcrit: 1
+  slope_weight: 0.5
+  height_weight: 0.25
+  roughness_weight: 0.25
   multiplier: 3
   foot_size: {x: 2, y: 0.1, z: 1}
 --- !u!114 &126567576
@@ -219,11 +222,10 @@ MonoBehaviour:
   goal_location: {x: 0, y: 0, z: 0}
   starting_location: {x: 0, y: 0, z: 0}
   terrainData: {fileID: 0}
-  epsilon: 1
-  R_multiplier: 10
   foot_size: {x: 2, y: 0.1, z: 1}
   path: []
   crits: []
+  weights: []
   hcrit: 4
   d: 10
 --- !u!1 &261719763
@@ -319,6 +321,7 @@ MonoBehaviour:
   a2: 0.5
   a3: 0.25
   crits: []
+  weights: []
 --- !u!1 &662555537
 GameObject:
   m_ObjectHideFlags: 0

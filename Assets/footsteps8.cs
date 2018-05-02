@@ -160,19 +160,8 @@ public class footsteps8 : MonoBehaviour
 
         //foot_size *= multiplier;
     }
-    /*
-    void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log(collision.gameObject.name);
-        /*
-        if (collision.gameObject.tag == "PrelimFootSteps")
-        {
-            Debug.Log(collision.gameObject.name);
-            Destroy(collision.gameObject);
-        }
-    }
-    */
-    GameObject[] footsteps = new GameObject[] { };// = GameObject.FindGameObjectsWithTag("PrelimFootSteps");
+
+    GameObject[] footsteps = new GameObject[] { };
     List<GameObject> fs;
 
     void Update()
@@ -217,6 +206,7 @@ public class footsteps8 : MonoBehaviour
                 if (node.foot == "left")
                 {
                     GameObject right_foot_child = GameObject.Instantiate(right_foot, node.position, Quaternion.Euler(0, node.theta, 0));
+                    right_foot_child.transform.localScale = foot_size;
                     right_foot_child.tag = "FinalFootSteps";
                     right_foot_child.name = "footstep" + (num_of_footsteps + 2).ToString();
                     right_foot_child.layer = 9;
@@ -224,6 +214,7 @@ public class footsteps8 : MonoBehaviour
                 else
                 {
                     GameObject left_foot_child = GameObject.Instantiate(left_foot, node.position, Quaternion.Euler(0, node.theta, 0));
+                    left_foot_child.transform.localScale = foot_size;
                     left_foot_child.tag = "FinalFootSteps";
                     left_foot_child.name = "footstep" + (num_of_footsteps + 2).ToString();
                     left_foot_child.layer = 9;
@@ -445,20 +436,28 @@ public class footsteps8 : MonoBehaviour
     Node NNGoalOrient(Vector2 srand_location, List<Node> tree)
     {
         int nearest_index = 0;
-        Vector2 nearest_location = VecIn2D(tree[0].position);
-        float nearest_distance = Vector2.Distance(nearest_location, srand_location);
-
-        for (int i = 0; i < tree.Count; i++)
+        if (tree.Count != 0)
         {
-            Vector2 current_node = VecIn2D(tree[i].position);
-            if (Vector2.Distance(current_node, srand_location) < nearest_distance)
+
+            Vector2 nearest_location = VecIn2D(tree[0].position);
+            float nearest_distance = Vector2.Distance(nearest_location, srand_location);
+
+            for (int i = 0; i < tree.Count; i++)
             {
-                nearest_location = VecIn2D(tree[i].position);
-                nearest_distance = Vector2.Distance(current_node, srand_location);
-                nearest_index = i;
+                Vector2 current_node = VecIn2D(tree[i].position);
+                if (Vector2.Distance(current_node, srand_location) < nearest_distance)
+                {
+                    nearest_location = VecIn2D(tree[i].position);
+                    nearest_distance = Vector2.Distance(current_node, srand_location);
+                    nearest_index = i;
+                }
             }
-        }
         return tree[nearest_index];
+        }
+        else
+        {
+            return list_of_trees[list_of_trees.Count - 1][0];
+        }
     }
 
     Node NNGaitSmooth(Vector2 srand_location, List<Node> tree)
@@ -603,26 +602,21 @@ public class footsteps8 : MonoBehaviour
         if (node.foot == "left")
         {
             GameObject right_foot_child = GameObject.Instantiate(right_foot, node.position, Quaternion.Euler(0, node.theta, 0));
+            right_foot_child.transform.localScale = foot_size;
             right_foot_child.tag = "PrelimFootSteps";
             name = "right_foot_" +list_of_trees.Count.ToString()+"_" + node.self_index.ToString();
-
             node.name = name;
-            right_foot_child.name =name;
-
+            right_foot_child.name = name;
             right_foot_child.layer = 9;
         }
         else
         {
             GameObject left_foot_child = GameObject.Instantiate(left_foot, node.position, Quaternion.Euler(0, node.theta, 0));
+            left_foot_child.transform.localScale = foot_size;
             left_foot_child.tag = "PrelimFootSteps";
             name = "left_foot_" + list_of_trees.Count.ToString() + "_" + node.self_index.ToString();
-
-            //name = "left_foot" + node.self_index.ToString();
-
             node.name = name;
             left_foot_child.name = name;
-
-
             left_foot_child.layer = 9;
         }
 
@@ -633,22 +627,21 @@ public class footsteps8 : MonoBehaviour
     bool RemoveCollisionAndCheckForReached(Vector3 goal)
     {
         bool trigger = false;
-        for (int i = 0; i < tree.Count; i++)
+        int n = tree.Count;
+        for (int i = 0; i < n; i++)
         {
-            if(GameObject.Find(tree[i].name) == null)
+            if (GameObject.Find(tree[i].name) == null)
             {
-                Debug.Log(tree[i].name);
                 tree.RemoveAt(i);
+                i--;
+                n--;
             }
-
             else if(Vector2.Distance(VecIn2D(tree[i].position), VecIn2D(goal)) < goal_threshold)
             {
                 goal_reached = true;
                 trigger = true;
             }
-            
         }
-
         if (!trigger) {
             return false;
         }
