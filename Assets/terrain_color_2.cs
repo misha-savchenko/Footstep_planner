@@ -6,16 +6,21 @@ public class terrain_color_2 : MonoBehaviour
 {
     public float radius = 5;
 
+    public float hcrit = 4; //40 cm, ~ the height of two steps
+    public float scrit = 30; //degrees, approximation
     public int ncrit = 50;
+
     public int nst = 0;
     public int d = 10;
 
-    public float hcrit = 4; //40 cm, ~ the height of two steps
-    public float scrit = 30; //degrees, approximation
 
     public float a1 = 0.5F;
     public float a2 = 0.25F;
     public float a3 = 0.25F;
+
+
+    public float[] crits;
+
 
     void Start()
     {
@@ -100,7 +105,7 @@ public class terrain_color_2 : MonoBehaviour
                 float a3 = 0.25F;
                 */
                 float[] weights = { a1, a2, a3, 1 };
-                float[] crits = { scrit, hcrit, 1, 9999};
+                //float[] crits = { scrit, hcrit, 1, 9999};
                 //Slope of the terrain
                 splatWeights[0] = steepness;// Mathf.Clamp01(steepness * steepness / (terrainData.heightmapHeight / 5.0f));
                 //Increases with height 

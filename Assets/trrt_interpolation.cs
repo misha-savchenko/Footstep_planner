@@ -267,6 +267,8 @@ public class trrt_interpolation: MonoBehaviour
         return location;
     }
 
+    public float[] crits;
+
     public float getCost(Vector3 position, int d)
     {
 
@@ -321,7 +323,7 @@ public class trrt_interpolation: MonoBehaviour
         //float angle_weight = 0.10F
 
         float[] weights = { slope_weight, height_weight, roughness_weight, 1 };// , euclidean_distance_weight };
-        float[] crits = { scrit, hcrit, 1, 9999 };// , Vector3.Distance(starting_location,goal_location)*2F};
+        //float[] crits = { scrit, hcrit, 1, 9999 };// , Vector3.Distance(starting_location,goal_location)*2F};
 
         //Slope of the terrain
         float s = steepness;
@@ -419,6 +421,8 @@ public class trrt_interpolation: MonoBehaviour
         Vector2 final_location = random_location;
         Vector2 mid_location = close_location;
 
+
+
         if (Vector2.Distance(close_location, random_location) > delta)
         {
             final_location = close_location + (random_location- close_location).normalized * delta;
@@ -430,7 +434,7 @@ public class trrt_interpolation: MonoBehaviour
         {
 
             Vector2 temp_mid_location = Vector2.Lerp(close_location, final_location, f);
-            f+=.2f;
+            f+=.1f;
 
             if (getCost(getPoint(temp_mid_location[0] / x_max, temp_mid_location[1] / y_max),d)>= 0.8)
             {
@@ -446,5 +450,40 @@ public class trrt_interpolation: MonoBehaviour
 
     }
 
-  
+    Vector2 Interpolate2(Vector2 close_location, Vector2 random_location)
+    {
+
+        Vector2 final_location = random_location;
+        Vector2 mid_location = close_location;
+        float dist = Vector2.Distance(final_location, close_location);
+
+
+
+        if (Vector2.Distance(close_location, random_location) > delta)
+        {
+            final_location = close_location + (random_location - close_location).normalized * delta;
+        }
+
+        float f = 0f;
+
+        while (Vector2.Distance(close_location, mid_location) < Vector2.Distance(close_location, final_location))
+        {
+
+            Vector2 temp_mid_location = Vector2.Lerp(close_location, final_location, f);
+            f += .2f;
+
+            if (getCost(getPoint(temp_mid_location[0] / x_max, temp_mid_location[1] / y_max), d) >= 0.8)
+            {
+                break;
+            }
+            else
+            {
+                mid_location = temp_mid_location;
+            }
+
+        }
+        return mid_location;
+
+    }
+
 }

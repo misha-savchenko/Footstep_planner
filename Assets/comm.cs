@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class comm : MonoBehaviour {
 
-    //dimension are a pain lets say that each unity unit is a meter 
-    //maps 500 x 500 meters
-    //foot size length: 25 cm width: 10 cm
-    //global node delta: 1 meter
-    //footstep node delta .002 cm
-
     public footsteps8 footsteps;
-    //public steps_A_E global_RRT;
-    //public global_t_rrt_variant global_RRT;
     public trrt_interpolation global_RRT;
 
     public terrain_color_2 terrain_color;
@@ -21,6 +13,8 @@ public class comm : MonoBehaviour {
 
     public int step_d = 10;
     public float hcrit = .4F;
+    public float scrit = 30;
+    public float rcrit = 1;
 
     public float multiplier = 3F;
     public Vector3 foot_size = new Vector3(2, 0.1f, 1);
@@ -31,8 +25,6 @@ public class comm : MonoBehaviour {
         Physics.GetIgnoreLayerCollision(9, 9);
 
         foot_size *= multiplier;
-        
-
 
         global_RRT = GameObject.FindObjectOfType<trrt_interpolation>();
         footsteps = GameObject.FindObjectOfType<footsteps8>();
@@ -46,8 +38,10 @@ public class comm : MonoBehaviour {
         global_RRT.d = step_d;
         terrain_color.d = step_d;
 
-        global_RRT.hcrit = hcrit;
-        terrain_color.hcrit = hcrit;
+
+        float[] crits = new float[] { scrit, hcrit, rcrit, 9999 };
+        global_RRT.crits = crits;
+        terrain_color.crits = crits;
 
         footsteps.multiplier = multiplier;
         footsteps.foot_size = foot_size;
@@ -74,17 +68,8 @@ public class comm : MonoBehaviour {
         {
             footsteps.path = global_RRT.path;
             footsteps.start_position = footsteps.path[footsteps.path.Count-1];
-            //footsteps.temp_goal_location = footsteps.path[footsteps.path.Count - 2];
             footsteps.goal_location = footsteps.path[footsteps.path.Count-2];
             footsteps.tRRT = global_RRT;
-
-
-            /*
-            footsteps.left_foot.transform.localScale = new Vector3(0.01F, 0.01F, 0.01F);
-            footsteps.right_foot.transform.localScale = new Vector3(0.01F, 0.01F, 0.01F);
-            footsteps.left_foot_after_image.transform.localScale = new Vector3(0.01F, 0.01F, 0.01F);
-            footsteps.right_foot_after_image.transform.localScale = new Vector3(0.01F, 0.01F, 0.01F);
-            */
             footsteps.enabled = true;
         }
 
@@ -99,13 +84,11 @@ public class comm : MonoBehaviour {
     {
         myRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(myRay, out hit))
-        { // here I ask : if myRay hits something, store all the info you can find in the raycasthit varible.
-          // things like the position where the hit happend, the name of the object that got hit etc..etc..
-
+        {
             if (Input.GetMouseButtonDown(0))
             {
 
-                start_or_end_point = GameObject.Instantiate(start_or_end_point, hit.point, Quaternion.identity);// instatiate a prefab on the position where the ray hits the floor.
+                start_or_end_point = GameObject.Instantiate(start_or_end_point, hit.point, Quaternion.identity);
                 LineRenderer lineRenderer = start_or_end_point.AddComponent<LineRenderer>();
 
 

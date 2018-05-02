@@ -203,6 +203,7 @@ MonoBehaviour:
   R_multiplier: 10
   foot_size: {x: 2, y: 0.1, z: 1}
   path: []
+  crits: []
   hcrit: 4
   d: 10
 --- !u!114 &126567579
@@ -223,6 +224,8 @@ MonoBehaviour:
   debug: 1
   step_d: 8
   hcrit: 30
+  scrit: 30
+  rcrit: 1
   multiplier: 3
   foot_size: {x: 2, y: 0.1, z: 1}
 --- !u!114 &126567580
@@ -335,14 +338,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 5
+  hcrit: 4
+  scrit: 30
   ncrit: 50
   nst: 0
   d: 10
-  hcrit: 4
-  scrit: 30
   a1: 0.25
   a2: 0.5
   a3: 0.25
+  crits: []
 --- !u!114 &261719768
 MonoBehaviour:
   m_ObjectHideFlags: 0

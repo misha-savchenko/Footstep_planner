@@ -174,19 +174,21 @@ public class footsteps8 : MonoBehaviour
 
     void Update()
     {
+        //right_foot = GameObject.Find("right");
+        //left_foot = GameObject.Find("left");
 
         if (GameObject.FindObjectOfType<trrt_interpolation>().path_found && !GameObject.Find("left(Clone)"))
         {
 
             Vector3 left_loc = new Vector3(0F, foot_size[1], 0);
             start_position[1] += foot_size[1];
-            left_foot = GameObject.Instantiate(left_foot, start_position, Quaternion.Euler(0, 90, 0)) as GameObject;
+            GameObject left_foot_child = GameObject.Instantiate(left_foot, start_position, Quaternion.Euler(0, 90, 0)) as GameObject;
             left_foot.transform.localScale *= multiplier;
             left_foot.layer = 9;
 
 
             Vector3 right_loc = start_position + new Vector3(2 * foot_size[2], foot_size[1], 0);
-            right_foot = GameObject.Instantiate(right_foot, right_loc, Quaternion.Euler(0, 90, 0)) as GameObject;
+            GameObject right_foot_child = GameObject.Instantiate(right_foot, right_loc, Quaternion.Euler(0, 90, 0)) as GameObject;
             right_foot.transform.localScale *= multiplier;
             right_foot.layer = 9;
 
@@ -194,7 +196,6 @@ public class footsteps8 : MonoBehaviour
             Node first_node = new Node(right_loc, VecIn2D(right_loc), left_loc, 0, 0, 90, "left","left(Clone)");
             tree.Add(first_node);
         }
-
         if (!goal_reached)
         {
             HierarchialRRT(start_position, goal_location);
@@ -212,17 +213,17 @@ public class footsteps8 : MonoBehaviour
 
                 if (node.foot == "left")
                 {
-                    right_foot = GameObject.Instantiate(right_foot, node.position, Quaternion.Euler(0, node.theta, 0));
-                    right_foot.tag = "FinalFootSteps";
-                    right_foot.name = "footstep" + (num_of_footsteps + 2).ToString();
-                    right_foot.layer = 9;
+                    GameObject right_foot_child = GameObject.Instantiate(right_foot, node.position, Quaternion.Euler(0, node.theta, 0));
+                    right_foot_child.tag = "FinalFootSteps";
+                    right_foot_child.name = "footstep" + (num_of_footsteps + 2).ToString();
+                    right_foot_child.layer = 9;
                 }
                 else
                 {
-                    left_foot = GameObject.Instantiate(left_foot, node.position, Quaternion.Euler(0, node.theta, 0));
-                    left_foot.tag = "FinalFootSteps";
-                    left_foot.name = "footstep" + (num_of_footsteps + 2).ToString();
-                    left_foot.layer = 9;
+                    GameObject left_foot_child = GameObject.Instantiate(left_foot, node.position, Quaternion.Euler(0, node.theta, 0));
+                    left_foot_child.tag = "FinalFootSteps";
+                    left_foot_child.name = "footstep" + (num_of_footsteps + 2).ToString();
+                    left_foot_child.layer = 9;
 
                 }
                 node = tree[node.parent_index];
@@ -342,6 +343,7 @@ public class footsteps8 : MonoBehaviour
                         if (FootAreaCost(snew[i]) <= .8f)
                         {
                             NodeAddedToMap(snew[i], sgoal);
+                            break;
                         }
 
                         else
@@ -350,6 +352,7 @@ public class footsteps8 : MonoBehaviour
                             for (int j = 0; j < adjusted_node.Count; j++)
                             {
                                 NodeAddedToMap(adjusted_node[i], sgoal);
+                                break;
                             }
                         }
                     }
@@ -513,26 +516,26 @@ public class footsteps8 : MonoBehaviour
         string name;
         if (node.foot == "left")
         {
-            right_foot = GameObject.Instantiate(right_foot, node.position, Quaternion.Euler(0, node.theta, 0));
-            right_foot.tag = "PrelimFootSteps";
+            GameObject right_foot_child = GameObject.Instantiate(right_foot, node.position, Quaternion.Euler(0, node.theta, 0));
+            right_foot_child.tag = "PrelimFootSteps";
             name = "right_foot" + node.self_index.ToString();
 
             node.name = name;
-            right_foot.name =name;
+            right_foot_child.name =name;
 
-            right_foot.layer = 9;
+            right_foot_child.layer = 9;
         }
         else
         {
-            left_foot = GameObject.Instantiate(left_foot, node.position, Quaternion.Euler(0, node.theta, 0));
-            left_foot.tag = "PrelimFootSteps";
+            GameObject left_foot_child = GameObject.Instantiate(left_foot, node.position, Quaternion.Euler(0, node.theta, 0));
+            left_foot_child.tag = "PrelimFootSteps";
             name = "left_foot" + node.self_index.ToString();
 
             node.name = name;
-            left_foot.name = name;
+            left_foot_child.name = name;
 
 
-            left_foot.layer = 9;
+            left_foot_child.layer = 9;
         }
 
         node.self_index = tree.Count;
