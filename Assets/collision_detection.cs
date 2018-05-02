@@ -11,8 +11,6 @@ public class collision_detection : MonoBehaviour {
 
         if (collision.gameObject.name == "Terrain")
         {
-            
-
             Destroy(this.gameObject);
         }
     }

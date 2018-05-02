@@ -195,7 +195,7 @@ MonoBehaviour:
   curr_num_points: 0
   x_max: 100
   y_max: 100
-  delta: 60
+  delta: 10
   goal_location: {x: 0, y: 0, z: 0}
   starting_location: {x: 0, y: 0, z: 0}
   terrainData: {fileID: 0}
@@ -245,6 +245,7 @@ MonoBehaviour:
   right_foot: {fileID: 1787089126843462, guid: 61438a4dd7cda5942ac2facf3c76cda0, type: 2}
   start_position: {x: 0, y: 0, z: 0}
   goal_location: {x: 40, y: 0, z: 40}
+  goal_orientation: 0
   tRRT: {fileID: 0}
   foot_size: {x: 2, y: 0.1, z: 1}
   multiplier: 3
@@ -253,6 +254,10 @@ MonoBehaviour:
   goal_threshold: 2
   goal_probability: 0.7
   goal_reached: 0
+  rand_points_created: 0
+  w1: 1
+  w2: 0.2
+  w3: 0
 --- !u!1 &261719763
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +336,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 261719763}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8a35d519a7be174a834af023ba434f8, type: 3}
   m_Name: 

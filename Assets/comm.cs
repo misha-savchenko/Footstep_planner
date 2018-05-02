@@ -60,10 +60,7 @@ public class comm : MonoBehaviour {
             {
                 SpawnStartEndPoints(global_RRT.final_point);
             }
-
         }
-
-
         if (global_RRT.path_found && (!GameObject.Find("left(Clone)") || !GameObject.Find("right(Clone)")) && Input.GetKeyDown(KeyCode.Space))
         {
             footsteps.path = global_RRT.path;
