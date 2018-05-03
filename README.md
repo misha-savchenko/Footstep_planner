@@ -141,7 +141,9 @@ While I did not achieve the results I have expected in this project I because in
 ## Using and Installing
 
 To download this repository you can use the following string in the command line
+
 `git clone git@gitlab.com:Scathach/height_map.git`
+
 Or just download the zip file with the link on the top of the page. To test some of the simulation either launch the the following files directly or if you are familiar with the unity setup you can import the project into you Unity workspace and change the different variables in the comm script on the right to see how the simulation reacts.
 
 The following executable file are the simulation that showcase the some of my discussion:
