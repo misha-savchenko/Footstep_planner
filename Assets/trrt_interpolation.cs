@@ -259,7 +259,7 @@ public class trrt_interpolation: MonoBehaviour
         float x_corr = x * x_max;
         float y_corr = y * y_max;
         float z_corr = terrainData.GetHeight(Mathf.RoundToInt(x * terrainData.heightmapWidth), Mathf.RoundToInt(y * terrainData.heightmapHeight));
-        z_corr += foot_size[1];
+        z_corr += foot_size[1]*2;
 
         Vector3 location = new Vector3(x_corr, z_corr, y_corr);
         return location;
